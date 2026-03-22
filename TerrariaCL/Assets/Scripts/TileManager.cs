@@ -13,6 +13,7 @@ public class TileManager : MonoBehaviour
     public int worldWidth = 100;
     public int worldHeight = 50;
     private TileType[,] tiles;
+    private GameObject[,] tileObjects;
     public float noiseScale = 0.1f;
 
     void Start()
@@ -25,6 +26,7 @@ public class TileManager : MonoBehaviour
     {
         seed = Random.Range(0f, 1000f);
         tiles = new TileType[worldWidth, worldHeight];
+        tileObjects = new GameObject[worldWidth, worldHeight];
 
         for (int x = 0; x < worldWidth; x++)
         {
@@ -61,6 +63,7 @@ public class TileManager : MonoBehaviour
 
                 GameObject tile = GameObject.CreatePrimitive(PrimitiveType.Quad);
                 tile.transform.position = new Vector3(x, y, 0);
+                tileObjects[x, y] = tile;
 
                 Color tileColor = GetTileColor(tiles[x, y]);
                 Renderer renderer = tile.GetComponent<Renderer>();
@@ -82,5 +85,48 @@ public class TileManager : MonoBehaviour
             default:
                 return Color.white;
         }
+    }
+
+    public void BreakTile(int x, int y)
+    {
+        if (x < 0 || x >= worldWidth || y < 0 || y >= worldHeight)
+            return;
+        if (tiles[x, y] == TileType.Air)
+            return;
+
+        tiles[x, y] = TileType.Air;
+        UpdateTileVisual(x, y);
+    }
+
+    void UpdateTileVisual(int x, int y)
+    {
+        if (tileObjects[x, y] != null)
+        {
+            Destroy(tileObjects[x, y]);
+            tileObjects[x, y] = null;
+        }
+        else
+        {
+            GameObject tile = GameObject.CreatePrimitive(PrimitiveType.Quad);
+            tile.transform.position = new Vector3(x, y, 0);
+            tileObjects[x, y] = tile;
+
+            Color tileColor = GetTileColor(tiles[x, y]);
+            Renderer renderer = tile.GetComponent<Renderer>();
+            Material mat = new Material(Shader.Find("Universal Render Pipeline/Lit"));
+            mat.color = tileColor;
+            renderer.material = mat;
+        }
+    }
+
+    internal void PlaceTile(int x, int y)
+    {
+        if (x < 0 || x >= worldWidth || y < 0 || y >= worldHeight)
+            return;
+        if (tiles[x, y] == TileType.Stone || tiles[x, y] == TileType.Dirt)
+            return;
+
+        tiles[x, y] = TileType.Dirt;
+        UpdateTileVisual(x, y);
     }
 }

@@ -10,16 +10,22 @@ public class TileInteraction : MonoBehaviour
 
     void Update()
     {
-        Vector3 worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        if (Camera.main == null) return;
+
+        Vector3 mousePos = Input.mousePosition;
+        mousePos.z = -Camera.main.transform.position.z;
+        Vector3 worldPos = Camera.main.ScreenToWorldPoint(mousePos);
+
         int x = Mathf.FloorToInt(worldPos.x);
         int y = Mathf.FloorToInt(worldPos.y);
 
         if (Input.GetMouseButtonDown(0))
         {
             tileManager.BreakTile(x, y);
-        } else if (Input.GetMouseButton(1))
+        }
+        else if (Input.GetMouseButton(1))
         {
-            tileManager.PlaceTile(x,y);
+            tileManager.PlaceTile(x, y);
         }
     }
 }

@@ -11,12 +11,11 @@ public class TileInteraction : MonoBehaviour
     void Update()
     {
         Vector3 worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        int x = Mathf.RoundToInt(worldPos.x);
-        int y = Mathf.RoundToInt(worldPos.y);
+        int x = Mathf.FloorToInt(worldPos.x);
+        int y = Mathf.FloorToInt(worldPos.y);
 
         if (Input.GetMouseButtonDown(0))
         {
-            Debug.Log($"Clicked at tile at X:{x} Y:{y}");
             tileManager.BreakTile(x, y);
         } else if (Input.GetMouseButton(1))
         {

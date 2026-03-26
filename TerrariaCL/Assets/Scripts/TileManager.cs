@@ -5,7 +5,10 @@ public enum TileType
 {
     Air = 0,
     Dirt = 1,
-    Stone = 2
+    Stone = 2,
+    Iron = 3,
+    Bronze = 4,
+    Titanium = 5
 }
 
 public class TileManager : MonoBehaviour
@@ -18,6 +21,9 @@ public class TileManager : MonoBehaviour
     public Tilemap tilemap;
     public RuleTile dirtTile;
     public RuleTile stoneTile;
+    public RuleTile ironTile;
+    public RuleTile bronzeTile;
+    public RuleTile titaniumTile;
     public float caveScale = 0.05f;
     public float caveThreshold = 0.45f;
     private TileType[,] tiles;
@@ -55,9 +61,27 @@ public class TileManager : MonoBehaviour
                 {
                     float caveNoise = Mathf.PerlinNoise(x * caveScale + seed, y * caveScale + seed * 0.5f);
                     if (caveNoise < caveThreshold)
+                    {
                         tiles[x, y] = TileType.Air;
+                    }
                     else
-                        tiles[x, y] = TileType.Stone;
+                    {
+                        // Ore generation
+                        float ironNoise = Mathf.PerlinNoise(x * 0.1f + seed * 1.5f, y * 0.1f + seed * 1.5f);
+                        float bronzeNoise = Mathf.PerlinNoise(x * 0.08f + seed * 2.5f, y * 0.08f + seed * 2.5f);
+                        float titaniumNoise = Mathf.PerlinNoise(x * 0.06f + seed * 3.5f, y * 0.06f + seed * 3.5f);
+
+                        float depthFactor = 1f - ((float)y / worldHeight);
+
+                        if (titaniumNoise > 0.78f && depthFactor > 0.6f)
+                            tiles[x, y] = TileType.Titanium;
+                        else if (bronzeNoise > 0.72f && depthFactor > 0.4f)
+                            tiles[x, y] = TileType.Bronze;
+                        else if (ironNoise > 0.65f)
+                            tiles[x, y] = TileType.Iron;
+                        else
+                            tiles[x, y] = TileType.Stone;
+                    }
                 }
             }
         }
@@ -81,6 +105,9 @@ public class TileManager : MonoBehaviour
         {
             case TileType.Dirt: return dirtTile;
             case TileType.Stone: return stoneTile;
+            case TileType.Iron: return ironTile;
+            case TileType.Bronze: return bronzeTile;
+            case TileType.Titanium: return titaniumTile;
             default: return null;
         }
     }

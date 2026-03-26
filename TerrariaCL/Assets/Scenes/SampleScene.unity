@@ -156,6 +156,9 @@ MonoBehaviour:
   tilemap: {fileID: 1546335884}
   dirtTile: {fileID: 11400000, guid: c9d7a3e44ed3c734da8cb2e2ff6c8ecd, type: 2}
   stoneTile: {fileID: 11400000, guid: 6679de629ed01f64fbda7c2a0aef4fa1, type: 2}
+  ironTile: {fileID: 11400000, guid: c4622816ccf021945bee9d2350d281d5, type: 2}
+  bronzeTile: {fileID: 11400000, guid: 825103df86dbbe449b313e6c8006220a, type: 2}
+  titaniumTile: {fileID: 11400000, guid: bcc9fd7e44b9fc04dbc9779bd5c69fbc, type: 2}
   caveScale: 0.06
   caveThreshold: 0.4
 --- !u!4 &1594954

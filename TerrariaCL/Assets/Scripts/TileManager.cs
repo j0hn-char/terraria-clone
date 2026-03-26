@@ -12,13 +12,14 @@ public class TileManager : MonoBehaviour
 {
     public int worldWidth = 100;
     public int worldHeight = 50;
-    public float noiseScale = 0.1f;
+    public float noiseScale = 0.02f;
     public float seed;
 
     public Tilemap tilemap;
     public RuleTile dirtTile;
     public RuleTile stoneTile;
-
+    public float caveScale = 0.05f;
+    public float caveThreshold = 0.45f;
     private TileType[,] tiles;
 
     void Start()
@@ -34,16 +35,30 @@ public class TileManager : MonoBehaviour
 
         for (int x = 0; x < worldWidth; x++)
         {
-            int surfaceHeight = Mathf.RoundToInt(Mathf.PerlinNoise(x * noiseScale + seed, 0) * worldHeight * 0.5f + worldHeight * 0.25f);
+            int surfaceHeight = Mathf.RoundToInt(Mathf.PerlinNoise(x * noiseScale + seed, 0) * worldHeight * 0.3f + worldHeight * 0.4f);
 
             for (int y = 0; y < worldHeight; y++)
             {
                 if (y > surfaceHeight)
                     tiles[x, y] = TileType.Air;
-                else if (y > surfaceHeight - 10)
+                else if (y > surfaceHeight - 3)
+                {
                     tiles[x, y] = TileType.Dirt;
+                }
+                else if (y > surfaceHeight - 25)
+                {
+                    float transitionNoise = Mathf.PerlinNoise(x * 0.2f + seed, y * 0.2f + seed);
+                    float transitionChance = (float)(y - (surfaceHeight - 25)) / 22f;
+                    tiles[x, y] = transitionNoise > transitionChance ? TileType.Stone : TileType.Dirt;
+                }
                 else
-                    tiles[x, y] = TileType.Stone;
+                {
+                    float caveNoise = Mathf.PerlinNoise(x * caveScale + seed, y * caveScale + seed * 0.5f);
+                    if (caveNoise < caveThreshold)
+                        tiles[x, y] = TileType.Air;
+                    else
+                        tiles[x, y] = TileType.Stone;
+                }
             }
         }
     }

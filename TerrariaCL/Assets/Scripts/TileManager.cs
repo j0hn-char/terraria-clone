@@ -18,6 +18,7 @@ public class TileManager : MonoBehaviour
     public float noiseScale = 0.02f;
     public float seed;
 
+    public GameObject itemDropPrefab;
     public Tilemap tilemap;
     public RuleTile dirtTile;
     public RuleTile stoneTile;
@@ -27,10 +28,12 @@ public class TileManager : MonoBehaviour
     public float caveScale = 0.05f;
     public float caveThreshold = 0.45f;
     private TileType[,] tiles;
+    private Inventory inventory;
 
     void Start()
     {
         GenerateWorld();
+        inventory = FindAnyObjectByType<Inventory>();
         RenderWorld();
     }
 
@@ -118,19 +121,26 @@ public class TileManager : MonoBehaviour
             return;
         if (tiles[x, y] == TileType.Air)
             return;
-
+        TileType previousType = tiles[x, y];
         tiles[x, y] = TileType.Air;
         tilemap.SetTile(new Vector3Int(x, y, 0), null);
+        if (itemDropPrefab != null)
+        {
+            GameObject drop = Instantiate(itemDropPrefab, new Vector3(x + 0.5f, y + 0.5f, 0), Quaternion.identity);
+            ItemDrop itemDrop = drop.GetComponent<ItemDrop>();
+            itemDrop.itemType = previousType;
+        }
     }
 
-    public void PlaceTile(int x, int y)
+    public bool PlaceTile(int x, int y, TileType type)
     {
         if (x < 0 || x >= worldWidth || y < 0 || y >= worldHeight)
-            return;
+            return false;
         if (tiles[x, y] != TileType.Air)
-            return;
+            return false;
 
-        tiles[x, y] = TileType.Dirt;
-        tilemap.SetTile(new Vector3Int(x, y, 0), dirtTile);
+        tiles[x, y] = type;
+        tilemap.SetTile(new Vector3Int(x, y, 0), GetTileAsset(type));
+        return true;
     }
 }

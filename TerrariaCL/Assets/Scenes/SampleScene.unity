@@ -153,6 +153,7 @@ MonoBehaviour:
   worldHeight: 150
   noiseScale: 0.03
   seed: 0
+  itemDropPrefab: {fileID: 8577054233989406086, guid: 581106c1906108d4b90d8fad8258d6aa, type: 3}
   tilemap: {fileID: 1546335884}
   dirtTile: {fileID: 11400000, guid: c9d7a3e44ed3c734da8cb2e2ff6c8ecd, type: 2}
   stoneTile: {fileID: 11400000, guid: 6679de629ed01f64fbda7c2a0aef4fa1, type: 2}
@@ -304,9 +305,10 @@ GameObject:
   - component: {fileID: 511563326}
   - component: {fileID: 511563325}
   - component: {fileID: 511563324}
+  - component: {fileID: 511563329}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -475,6 +477,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &511563329
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 511563323}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9dc2bdb27fde4974da7c97210e9f5042, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Inventory
+  slotCount: 9
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -747,8 +762,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 250, y: -40}
-  m_SizeDelta: {x: 450, y: 50}
+  m_AnchoredPosition: {x: 250, y: -50}
+  m_SizeDelta: {x: 470, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1400683785
 MonoBehaviour:
@@ -826,8 +841,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4197632734bceb24083633d65290bfff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HotbarUI
+  defaultSlotSprite: {fileID: -372949452097032247, guid: 19aa1041196a06b41b80d5ab96f5dc1c, type: 3}
   slotPrefab: {fileID: 7314466145554614795, guid: 1fd5fa05442fa0d4196acfd387acd633, type: 3}
   slotCount: 9
+  dirtSprite: {fileID: 8787024736928719945, guid: ff2b67986227c514cbf2ea7dbbcfd932, type: 3}
+  stoneSprite: {fileID: 6910897383715425976, guid: 2ab257f0101de4f409bfa7ea892a0072, type: 3}
+  ironSprite: {fileID: -4864532972284784385, guid: 7b8657ec6d610f24381f388decb0c326, type: 3}
+  bronzeSprite: {fileID: -5387689751851168883, guid: db8cc09458ca68d41a471ed7f2f78c87, type: 3}
+  titaniumSprite: {fileID: 6784690908140030958, guid: d4615c0ac96a3bc429eff6ed26ed3a7c, type: 3}
+  selectedSlotSprite: {fileID: 1561433874991539610, guid: 116204948ffb077409a7f97fe1b3ef22, type: 3}
 --- !u!1 &1546335881
 GameObject:
   m_ObjectHideFlags: 0

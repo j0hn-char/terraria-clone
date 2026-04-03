@@ -33,7 +33,7 @@ public class TileInteraction : MonoBehaviour
         }
         else if (Input.GetMouseButton(1))
         {
-            TileType selectedItem = inventory.getSelectedItem();
+            TileType selectedItem = inventory.GetSelectedItem();
             if (selectedItem != TileType.Air)
             {
                 bool placed = tileManager.PlaceTile(x, y, selectedItem);

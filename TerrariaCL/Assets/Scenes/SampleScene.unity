@@ -189,6 +189,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a552821b1bcaaa64ba15b10a9d884066, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TileInteraction
+  interactionRange: 5
 --- !u!1 &27879495
 GameObject:
   m_ObjectHideFlags: 0
@@ -726,6 +727,56 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1043231861
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1043231863}
+  - component: {fileID: 1043231862}
+  m_Layer: 0
+  m_Name: LightingSystem
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1043231862
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1043231861}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58052d17f8790c64e92be787a22c1574, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LightingSystem
+  tileManager: {fileID: 1594953}
+  tilemap: {fileID: 1546335884}
+  skyLight: 1
+  airFalloff: 0.05
+  solidFalloff: 0.15
+  minLight: 0.05
+--- !u!4 &1043231863
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1043231861}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 50.11197, y: 24.08587, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1400683783
 GameObject:
   m_ObjectHideFlags: 0
@@ -940,7 +991,7 @@ TilemapRenderer:
   m_MaxChunkCount: 16
   m_MaxFrameAge: 16
   m_SortOrder: 0
-  m_Mode: 0
+  m_Mode: 1
   m_DetectChunkCullingBounds: 0
 --- !u!1839735485 &1546335884
 Tilemap:
@@ -1227,3 +1278,4 @@ SceneRoots:
   - {fileID: 511563328}
   - {fileID: 27879499}
   - {fileID: 2003671838}
+  - {fileID: 1043231863}

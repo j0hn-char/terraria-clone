@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using System.Collections;
 
 public enum TileType
 {
@@ -29,12 +30,22 @@ public class TileManager : MonoBehaviour
     public float caveThreshold = 0.45f;
     private TileType[,] tiles;
     private Inventory inventory;
+    private LightingSystem lightingSystem;
 
     void Start()
     {
+        lightingSystem = FindObjectOfType<LightingSystem>();
+        inventory = FindObjectOfType<Inventory>();
         GenerateWorld();
-        inventory = FindAnyObjectByType<Inventory>();
         RenderWorld();
+        if (lightingSystem != null)
+            StartCoroutine(ApplyLightingDelayed());
+    }
+
+    IEnumerator ApplyLightingDelayed()
+    {
+        yield return null;
+        lightingSystem.CalculateLighting();
     }
 
     void GenerateWorld()
@@ -69,7 +80,6 @@ public class TileManager : MonoBehaviour
                     }
                     else
                     {
-                        // Ore generation
                         float ironNoise = Mathf.PerlinNoise(x * 0.1f + seed * 1.5f, y * 0.1f + seed * 1.5f);
                         float bronzeNoise = Mathf.PerlinNoise(x * 0.08f + seed * 2.5f, y * 0.08f + seed * 2.5f);
                         float titaniumNoise = Mathf.PerlinNoise(x * 0.06f + seed * 3.5f, y * 0.06f + seed * 3.5f);
@@ -96,8 +106,10 @@ public class TileManager : MonoBehaviour
         {
             for (int y = 0; y < worldHeight; y++)
             {
-                TileBase tile = GetTileAsset(tiles[x, y]);
-                tilemap.SetTile(new Vector3Int(x, y, 0), tile);
+                Vector3Int pos = new Vector3Int(x, y, 0);
+                tilemap.SetTile(pos, GetTileAsset(tiles[x, y]));
+                tilemap.SetTileFlags(pos, TileFlags.None);
+                tilemap.SetColor(pos, Color.black);
             }
         }
     }
@@ -130,6 +142,8 @@ public class TileManager : MonoBehaviour
             ItemDrop itemDrop = drop.GetComponent<ItemDrop>();
             itemDrop.itemType = previousType;
         }
+        if (lightingSystem != null)
+            lightingSystem.CalculateLighting();
     }
 
     public bool PlaceTile(int x, int y, TileType type)
@@ -140,7 +154,18 @@ public class TileManager : MonoBehaviour
             return false;
 
         tiles[x, y] = type;
-        tilemap.SetTile(new Vector3Int(x, y, 0), GetTileAsset(type));
+        Vector3Int pos = new Vector3Int(x, y, 0);
+        tilemap.SetTile(pos, GetTileAsset(type));
+        tilemap.SetTileFlags(pos, TileFlags.None);
+        if (lightingSystem != null)
+            lightingSystem.CalculateLighting();
         return true;
+    }
+
+    public TileType GetTile(int x, int y)
+    {
+        if (x < 0 || x >= worldWidth || y < 0 || y >= worldHeight)
+            return TileType.Stone;
+        return tiles[x, y];
     }
 }

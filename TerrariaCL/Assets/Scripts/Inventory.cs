@@ -40,7 +40,7 @@ public class Inventory : MonoBehaviour
         }
     }
 
-    public TileType getSelectedItem()
+    public TileType GetSelectedItem()
     {
         return items[selectedSlot];
     }
